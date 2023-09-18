@@ -2,12 +2,21 @@ import 'package:conversor_curso/app/components/currency_box.dart';
 import 'package:conversor_curso/app/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends StatelessWidget {
-  final TextEditingController toText = TextEditingController();
-  final TextEditingController fromText = TextEditingController();
-  late final HomeController homeController;
+class HomeView extends StatefulWidget {
+  @override
+  State<HomeView> createState() => _HomeViewState();
+}
 
-  HomeView({super.key}) {
+class _HomeViewState extends State<HomeView> {
+  late final HomeController homeController;
+  final TextEditingController toText = TextEditingController();
+
+  final TextEditingController fromText = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
     homeController = HomeController(toText: toText, fromText: fromText);
   }
 
@@ -30,17 +39,37 @@ class HomeView extends StatelessWidget {
             SizedBox(
               height: 50,
             ),
-            CurrencyBox(),
+            CurrencyBox(
+              selectedItem: homeController.toCurrency,
+              controller: homeController.toText,
+              items: homeController.currencies,
+              onChanged: (model) {
+                setState(() {
+                  homeController.toCurrency = model!;
+                });
+              },
+            ),
             SizedBox(
               height: 10,
             ),
-            CurrencyBox(),
+            CurrencyBox(
+              selectedItem: homeController.fromCurrency,
+              controller: homeController.fromText,
+              items: homeController.currencies,
+              onChanged: (model) {
+                setState(() {
+                  homeController.fromCurrency = model!;
+                });
+              },
+            ),
             SizedBox(
               height: 50,
             ),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.amber),
-                onPressed: () {},
+                onPressed: () {
+                  homeController.converter();
+                },
                 child: Text('CONVERTER'))
           ],
         ),

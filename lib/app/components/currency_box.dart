@@ -1,7 +1,18 @@
+import 'package:conversor_curso/app/models/currency_model.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyBox extends StatelessWidget {
-  const CurrencyBox({super.key});
+  final List<CurrencyModel> items;
+  final TextEditingController controller;
+  final void Function(CurrencyModel?)? onChanged;
+
+  final CurrencyModel selectedItem;
+  const CurrencyBox(
+      {super.key,
+      required this.items,
+      required this.controller,
+      required this.onChanged,
+      required this.selectedItem});
 
   @override
   Widget build(BuildContext context) {
@@ -12,19 +23,19 @@ class CurrencyBox extends StatelessWidget {
             flex: 1,
             child: SizedBox(
               height: 56,
-              child: DropdownButton(
+              child: DropdownButton<CurrencyModel>(
+                  value: selectedItem,
                   iconEnabledColor: Colors.amber,
                   isExpanded: true,
                   underline: Container(
                     height: 1,
                     color: Colors.amber,
                   ),
-                  value: 'a',
-                  items: [
-                    DropdownMenuItem(value: 'a', child: Text('Real')),
-                    DropdownMenuItem(value: 'b', child: Text('Dolar'))
-                  ],
-                  onChanged: (value) {}),
+                  items: items
+                      .map((e) =>
+                          DropdownMenuItem(value: e, child: Text(e.name)))
+                      .toList(),
+                  onChanged: onChanged),
             )),
         SizedBox(
           width: 10,
@@ -32,7 +43,8 @@ class CurrencyBox extends StatelessWidget {
         Expanded(
             flex: 2,
             child: TextField(
-                onChanged: (text) {},
+                controller: controller,
+                // onChanged: (text) {},
                 decoration: InputDecoration(
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Colors.amber)),
