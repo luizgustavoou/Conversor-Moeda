@@ -14,7 +14,6 @@ class HomeView extends StatelessWidget {
             const EdgeInsets.only(left: 20, right: 20, top: 100, bottom: 20),
         child: Column(
           children: [
-            Text('Hello world!'),
             Image.asset(
               'assets/images/logo.png',
               width: 130,
